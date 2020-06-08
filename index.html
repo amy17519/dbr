@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="Convenient Database Connections and Queries">
-<meta property="og:description" content="Convenient database connections and queries from R on the top of DBI.">
+<meta property="og:description" content="Convenient helpers for making secure database connections and user-friendly execution of SQL queries from R on the top of DBI.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">dbr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9004</span>
       </span>
     </div>
 
@@ -45,6 +45,9 @@
 </li>
 <li>
   <a href="reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="news/index.html">Changelog</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -110,7 +113,7 @@
 <a href="#querying-databases" class="anchor"></a>Querying databases</h2>
 <p>Once the connection parameters are loaded from a config file, making SQL queries are as easy as specifying the SQL statement and the name of the connection:</p>
 <div class="sourceCode" id="cb5"><pre class="r"><span class="fu"><a href="reference/db_query.html">db_query</a></span>(<span class="st">'show tables'</span>, <span class="st">'shinydemo'</span>)
-<span class="co">#&gt; INFO [2019-01-06 01:06:18] Connecting to shinydemo </span>
+<span class="co">#&gt; INFO [2019-01-06 01:06:18] Connecting to shinydemo</span>
 <span class="co">#&gt; INFO [2019-01-06 01:06:19] Executing:**********</span>
 <span class="co">#&gt; INFO [2019-01-06 01:06:19] show tables</span>
 <span class="co">#&gt; INFO [2019-01-06 01:06:19] ********************</span>
@@ -125,22 +128,53 @@
 <div id="sql-templating" class="section level2">
 <h2 class="hasAnchor">
 <a href="#sql-templating" class="anchor"></a>SQL templating</h2>
-<p>To reuse SQL chunks, you may list your SQL queries (or parts of it) in a structured YAML file, like in the bundled example config at <a href="https://github.com/daroczig/dbr/blob/master/inst/example_sql_chunks.yaml" class="uri">https://github.com/daroczig/dbr/blob/master/inst/example_sql_chunks.yaml</a></p>
-<p>Use <code>sql_chunk_files</code> to list or update the currently used SQL template YAML files, eg</p>
+<p>To reuse SQL chunks, you may list your SQL queries (or parts of it) in a structured YAML file, like in the bundled example config at <a href="https://github.com/daroczig/dbr/blob/master/inst/example_sql_chunks.yaml"><code>example_sql_chunks.yaml</code></a></p>
+<p>Use <code>sql_chunk_files</code> to list or update the currently used SQL template YAML file(s), eg via</p>
 <div class="sourceCode" id="cb6"><pre class="r"><span class="fu"><a href="reference/sql_chunk_files.html">sql_chunk_files</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'example_sql_chunks.yaml'</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">'dbr'</span>))</pre></div>
-<p>Then you may refer to any key in the list by a string that consist of the keys in hierarchy separated by a dot, so eg getting the <code>count</code> key from for the <code>countries</code> item in <code>dbr</code>’s <code>shinydemo</code> section, you could do something like:</p>
-<div class="sourceCode" id="cb7"><pre class="r"><span class="fu"><a href="reference/sql_chunk.html">sql_chunk</a></span>(<span class="st">'dbr.shinydemo.countries.count'</span>)
+<p>Then you may refer to any key in that definition by a string that consist of the keys in hierarchy separated by a dot, so looking at the below definition (part of <a href="https://github.com/daroczig/dbr/blob/master/inst/example_sql_chunks.yaml"><code>example_sql_chunks.yaml</code></a>):</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="fu">dbr:</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">  <span class="fu">shinydemo:</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">    <span class="fu">countries:</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">      <span class="fu">count:</span><span class="at"> SELECT COUNT(*) FROM Country</span></a></code></pre></div>
+<p>Getting the <code>count</code> key from for the <code>countries</code> item in <code>dbr</code>’s <code>shinydemo</code> section, you could do something like:</p>
+<div class="sourceCode" id="cb8"><pre class="r"><span class="fu"><a href="reference/sql_chunk.html">sql_chunk</a></span>(<span class="st">'dbr.shinydemo.countries.count'</span>)
 <span class="co">#&gt; SELECT COUNT(*) FROM Country</span></pre></div>
 <p>And pass it right away to <code>db_query</code>:</p>
-<div class="sourceCode" id="cb8"><pre class="r"><span class="no">countries</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/db_query.html">db_query</a></span>(<span class="fu"><a href="reference/sql_chunk.html">sql_chunk</a></span>(<span class="st">'dbr.shinydemo.countries.count'</span>), <span class="st">'shinydemo'</span>)
+<div class="sourceCode" id="cb9"><pre class="r"><span class="no">countries</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/db_query.html">db_query</a></span>(<span class="fu"><a href="reference/sql_chunk.html">sql_chunk</a></span>(<span class="st">'dbr.shinydemo.countries.count'</span>), <span class="st">'shinydemo'</span>)
 <span class="co">#&gt; INFO [2019-01-06 01:33:33] Connecting to shinydemo</span>
 <span class="co">#&gt; INFO [2019-01-06 01:33:34] Executing:**********</span>
 <span class="co">#&gt; INFO [2019-01-06 01:33:34] SELECT COUNT(*) FROM Country</span>
 <span class="co">#&gt; INFO [2019-01-06 01:33:34] ********************</span>
 <span class="co">#&gt; INFO [2019-01-06 01:33:34] Finished in 0.1291 secs returning 1 rows</span>
 <span class="co">#&gt; INFO [2019-01-06 01:33:34] Closing connection to shinydemo</span></pre></div>
-<p>The power of this templating approach is that you can easily reuse SQL chunks, eg for the list of European countries in:</p>
-<div class="sourceCode" id="cb9"><pre class="r"><span class="no">cities</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/db_query.html">db_query</a></span>(<span class="fu"><a href="reference/sql_chunk.html">sql_chunk</a></span>(<span class="st">'dbr.shinydemo.cities.europe'</span>), <span class="st">'shinydemo'</span>)
+<p>SQL chunks can be also defined in files outside of the YAML with the <code>sql</code> file extensions, and referenced with the <code>!include</code> tag in the YAML file, eg:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="fu">dbr:</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">  <span class="fu">shinydemo:</span></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3">    <span class="fu">countries:</span></a>
+<a class="sourceLine" id="cb10-4" data-line-number="4">      <span class="fu">europe:</span><span class="at"> !include europe.sql</span></a></code></pre></div>
+<p>This will read the content of <a href="https://github.com/daroczig/dbr/blob/master/inst/europe.sql"><code>europe.sql</code></a> and make it available as <code><a href="reference/sql_chunk.html">sql_chunk('dbr.shinydemo.countries.count')</a></code>.</p>
+<p>Besides files, a folder with <code>sql</code> files can be also included – in that case, the base filename (without the <code>sql</code> file extension) will become the key under the given key. For example, consider this YAML definition:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="fu">cities:</span><span class="at"> !include cities.sql</span></a></code></pre></div>
+<p>Will load all the files from the <a href="https://github.com/daroczig/dbr/tree/master/inst/cities.sql"><code>cities.sql</code></a> folder and make those available under <code>europe</code>, so resulting in an intermediate YAML as:</p>
+<pre><code>cities: !include cities.sql
+  europe: |-
+    SELECT Name
+    FROM City
+    WHERE CountryCode IN (
+      {sql_chunk('dbr.shinydemo.countries.europe', indent_after_linebreak = 2)})
+  europe_large: |-
+    SELECT Name
+    FROM City
+    WHERE
+      Population &gt; 1000000 AND
+      Name IN (
+        {sql_chunk('dbr.shinydemo.cities.europe', indent_after_linebreak = 4)}))</code></pre>
+<p>If the key of a directory <code>!include</code> is <code>~!</code>, then the keys are made available in the parent node, so eg</p>
+<pre><code>cities:
+  ~!: !include cities.sql</code></pre>
+<p>Would not actually create the <code>cities</code> key, but only the <code>europe</code> and <code>europe_large</code> keys in the root node.</p>
+<p>As you can see from the above, the main power of this templating approach is that you can easily reuse SQL chunks, eg for the list of European countries in:</p>
+<div class="sourceCode" id="cb14"><pre class="r"><span class="no">cities</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/db_query.html">db_query</a></span>(<span class="fu"><a href="reference/sql_chunk.html">sql_chunk</a></span>(<span class="st">'dbr.shinydemo.cities.europe'</span>), <span class="st">'shinydemo'</span>)
 <span class="co">#&gt; INFO [2019-01-06 01:32:02] Connecting to shinydemo</span>
 <span class="co">#&gt; INFO [2019-01-06 01:32:02] Executing:**********</span>
 <span class="co">#&gt; INFO [2019-01-06 01:32:02] SELECT Name</span>
@@ -153,24 +187,24 @@
 <span class="co">#&gt; INFO [2019-01-06 01:32:02] Finished in 0.1225 secs returning 643 rows</span>
 <span class="co">#&gt; INFO [2019-01-06 01:32:02] Closing connection to shinydemo</span></pre></div>
 <p>Where the <code>Country</code>-related subquery was specified in the <code>dbr.shinydemo.countries.europe</code> key as per:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">SELECT</span> Name</a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw">FROM</span> City</a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="kw">WHERE</span> CountryCode <span class="kw">IN</span> (</a>
-<a class="sourceLine" id="cb10-4" data-line-number="4">  {sql_chunk(<span class="st">'dbr.shinydemo.countries.europe'</span>, indent_after_linebreak = <span class="dv">2</span>)})</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">SELECT</span> Name</a>
+<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="kw">FROM</span> City</a>
+<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="kw">WHERE</span> CountryCode <span class="kw">IN</span> (</a>
+<a class="sourceLine" id="cb15-4" data-line-number="4">  {sql_chunk(<span class="st">'dbr.shinydemo.countries.europe'</span>, indent_after_linebreak = <span class="dv">2</span>)})</a></code></pre></div>
 <p>The <code>indent_after_linebreak</code> parameter is just for cosmetic updates in the query to align <code>FROM</code> and <code>WHERE</code> on the same character in the SQL statement.</p>
 <p>Even more complex / nested example:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb11-1" data-line-number="1">sql_chunk(<span class="st">'dbr.shinydemo.cities.europe_large'</span>)</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2">#&gt; <span class="kw">SELECT</span> Name</a>
-<a class="sourceLine" id="cb11-3" data-line-number="3">#&gt; <span class="kw">FROM</span> City</a>
-<a class="sourceLine" id="cb11-4" data-line-number="4">#&gt; <span class="kw">WHERE</span></a>
-<a class="sourceLine" id="cb11-5" data-line-number="5">#&gt;   Population &gt; <span class="dv">1000000</span> <span class="kw">AND</span></a>
-<a class="sourceLine" id="cb11-6" data-line-number="6">#&gt;   Name <span class="kw">IN</span> (</a>
-<a class="sourceLine" id="cb11-7" data-line-number="7">#&gt;     <span class="kw">SELECT</span> Name</a>
-<a class="sourceLine" id="cb11-8" data-line-number="8">#&gt;     <span class="kw">FROM</span> City</a>
-<a class="sourceLine" id="cb11-9" data-line-number="9">#&gt;     <span class="kw">WHERE</span> CountryCode <span class="kw">IN</span> (</a>
-<a class="sourceLine" id="cb11-10" data-line-number="10">#&gt;       <span class="kw">SELECT</span> Code</a>
-<a class="sourceLine" id="cb11-11" data-line-number="11">#&gt;       <span class="kw">FROM</span> Country</a>
-<a class="sourceLine" id="cb11-12" data-line-number="12">#&gt;       <span class="kw">WHERE</span> Continent = <span class="st">'Europe'</span>)))</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb16-1" data-line-number="1">sql_chunk(<span class="st">'dbr.shinydemo.cities.europe_large'</span>)</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">#&gt; <span class="kw">SELECT</span> Name</a>
+<a class="sourceLine" id="cb16-3" data-line-number="3">#&gt; <span class="kw">FROM</span> City</a>
+<a class="sourceLine" id="cb16-4" data-line-number="4">#&gt; <span class="kw">WHERE</span></a>
+<a class="sourceLine" id="cb16-5" data-line-number="5">#&gt;   Population &gt; <span class="dv">1000000</span> <span class="kw">AND</span></a>
+<a class="sourceLine" id="cb16-6" data-line-number="6">#&gt;   Name <span class="kw">IN</span> (</a>
+<a class="sourceLine" id="cb16-7" data-line-number="7">#&gt;     <span class="kw">SELECT</span> Name</a>
+<a class="sourceLine" id="cb16-8" data-line-number="8">#&gt;     <span class="kw">FROM</span> City</a>
+<a class="sourceLine" id="cb16-9" data-line-number="9">#&gt;     <span class="kw">WHERE</span> CountryCode <span class="kw">IN</span> (</a>
+<a class="sourceLine" id="cb16-10" data-line-number="10">#&gt;       <span class="kw">SELECT</span> Code</a>
+<a class="sourceLine" id="cb16-11" data-line-number="11">#&gt;       <span class="kw">FROM</span> Country</a>
+<a class="sourceLine" id="cb16-12" data-line-number="12">#&gt;       <span class="kw">WHERE</span> Continent = <span class="st">'Europe'</span>)))</a></code></pre></div>
 </div>
 </div>
   </div>

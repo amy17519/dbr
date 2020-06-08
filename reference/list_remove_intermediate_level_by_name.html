@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Checks if a database reference or connection is Redshift or not — is.redshift • dbr</title>
+<title>Remove intermediate list by moving up the children by one level — list_remove_intermediate_level_by_name • dbr</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Checks if a database reference or connection is Redshift or not — is.redshift" />
-<meta property="og:description" content="Checks if a database reference or connection is Redshift or not" />
+<meta property="og:title" content="Remove intermediate list by moving up the children by one level — list_remove_intermediate_level_by_name" />
+<meta property="og:description" content="Remove intermediate list by moving up the children by one level" />
 
 
 
@@ -111,30 +111,39 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Checks if a database reference or connection is Redshift or not</h1>
-    <small class="dont-index">Source: <a href='https://github.com/daroczig/dbr/blob/master/R/redshift.R'><code>R/redshift.R</code></a></small>
-    <div class="hidden name"><code>is.redshift.Rd</code></div>
+    <h1>Remove intermediate list by moving up the children by one level</h1>
+    <small class="dont-index">Source: <a href='https://github.com/daroczig/dbr/blob/master/R/chunks.R'><code>R/chunks.R</code></a></small>
+    <div class="hidden name"><code>list_remove_intermediate_level_by_name.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Checks if a database reference or connection is Redshift or not</p>
+    <p>Remove intermediate list by moving up the children by one level</p>
     </div>
 
-    <pre class="usage"><span class='fu'>is.redshift</span>(<span class='no'>db</span>)</pre>
+    <pre class="usage"><span class='fu'>list_remove_intermediate_level_by_name</span>(<span class='no'>l</span>, <span class='no'>n</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>db</th>
-      <td><p>database reference by name or object</p></td>
+      <th>l</th>
+      <td><p>list</p></td>
+    </tr>
+    <tr>
+      <th>n</th>
+      <td><p>list name of levels to be removed (but keeping children)</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>boolean</p>
+    <p>list</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='no'>l</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>'removeme'</span> <span class='kw'>=</span> <span class='fl'>2</span>))
+<span class='fu'>list_remove_intermediate_level_by_name</span>(<span class='no'>l</span>, <span class='st'>'removeme'</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

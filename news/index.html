@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Checks if a database reference or connection is Redshift or not — is.redshift • dbr</title>
+<title>Changelog • dbr</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,7 @@
 
 
 
-<meta property="og:title" content="Checks if a database reference or connection is Redshift or not — is.redshift" />
-<meta property="og:description" content="Checks if a database reference or connection is Redshift or not" />
+<meta property="og:title" content="Changelog" />
 
 
 
@@ -59,7 +58,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-topic">
+    <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -111,36 +110,76 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Checks if a database reference or connection is Redshift or not</h1>
-    <small class="dont-index">Source: <a href='https://github.com/daroczig/dbr/blob/master/R/redshift.R'><code>R/redshift.R</code></a></small>
-    <div class="hidden name"><code>is.redshift.Rd</code></div>
+      <h1 data-toc-skip>Changelog <small></small></h1>
+      <small>Source: <a href='https://github.com/daroczig/dbr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div class="ref-description">
-    <p>Checks if a database reference or connection is Redshift or not</p>
-    </div>
-
-    <pre class="usage"><span class='fu'>is.redshift</span>(<span class='no'>db</span>)</pre>
-
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>db</th>
-      <td><p>database reference by name or object</p></td>
-    </tr>
-    </table>
-
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>boolean</p>
-
+    <div id="dbr-0-1-0-9004-2020-06-08" class="section level1">
+<h1 class="page-header" data-toc-text="0.1.0.9004">
+<a href="#dbr-0-1-0-9004-2020-06-08" class="anchor"></a>dbr 0.1.0.9004 (2020-06-08)</h1>
+<ul>
+<li>add <code>aws</code> prefix for the AWS-related secrets handler(s)</li>
+<li>add function parameter for passing in temporarily SQL formatter function</li>
+<li>make <code>botor</code> dependency optional</li>
+<li>improve documentation and examples</li>
+<li>add support for reading config values from AWS System Manager’s Parameter Store</li>
+<li>add support for SQL chunks to be defined in files and folders outside of the YAML definitions</li>
+</ul>
+</div>
+    <div id="dbr-0-1-0-9003-2019-01-15" class="section level1">
+<h1 class="page-header" data-toc-text="0.1.0.9003">
+<a href="#dbr-0-1-0-9003-2019-01-15" class="anchor"></a>dbr 0.1.0.9003 (2019-01-15)</h1>
+<ul>
+<li>add support for <code>gzip</code> when inserting records into Redshift</li>
+</ul>
+</div>
+    <div id="dbr-0-1-0-9002-2019-01-14" class="section level1">
+<h1 class="page-header" data-toc-text="0.1.0.9002">
+<a href="#dbr-0-1-0-9002-2019-01-14" class="anchor"></a>dbr 0.1.0.9002 (2019-01-14)</h1>
+<ul>
+<li>add helper function to write JSON lines</li>
+<li>add support for passing database parameters not required for making the connection</li>
+<li>add support for inserting records into Redshift via S3 staging and <code>COPY FROM</code>
+</li>
+</ul>
+</div>
+    <div id="dbr-0-1-0-9001-2019-01-09" class="section level1">
+<h1 class="page-header" data-toc-text="0.1.0.9001">
+<a href="#dbr-0-1-0-9001-2019-01-09" class="anchor"></a>dbr 0.1.0.9001 (2019-01-09)</h1>
+<ul>
+<li>optionally return <code>data.table</code> or <code>tibble</code> instead of base <code>data.frame</code>
+</li>
+<li>improve documentation</li>
+<li>more unit tests</li>
+</ul>
+</div>
+    <div id="dbr-0-1-0-9000-2019-01-09" class="section level1">
+<h1 class="page-header" data-toc-text="0.1.0.9000">
+<a href="#dbr-0-1-0-9000-2019-01-09" class="anchor"></a>dbr 0.1.0.9000 (2019-01-09)</h1>
+<ul>
+<li>switch versioning to “in-development” schema</li>
+<li>drop <code>futile.logger</code> dependency for <code>logger</code>
+</li>
+<li>drop <code>AWR</code> dependencies for <code>botor</code>
+</li>
+<li>add functionality to write to tables</li>
+<li>improve documentation and examples on YAML definitions</li>
+<li>introduce support for SQL templating</li>
+</ul>
+</div>
+    <div id="dbr-0-1-2018-07-04" class="section level1">
+<h1 class="page-header" data-toc-text="0.1">
+<a href="#dbr-0-1-2018-07-04" class="anchor"></a>dbr 0.1 (2018-07-04)</h1>
+<p>Initial release after open-sourcing at System1.</p>
+</div>
   </div>
+
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
     </nav>
   </div>
+
 </div>
 
 
