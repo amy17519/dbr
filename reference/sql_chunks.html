@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Look up common SQL chunks from YAML definitions to be reused in SQL queries — sql_chunk • dbr</title>
+<title>Look up all SQL chunks from YAML definitions — sql_chunks • dbr</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Look up common SQL chunks from YAML definitions to be reused in SQL queries — sql_chunk" />
-<meta property="og:description" content="For more details and examples, please see the package README.md." />
+<meta property="og:title" content="Look up all SQL chunks from YAML definitions — sql_chunks" />
+<meta property="og:description" content="Look up all SQL chunks from YAML definitions" />
 
 
 
@@ -111,49 +111,22 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Look up common SQL chunks from YAML definitions to be reused in SQL queries</h1>
+    <h1>Look up all SQL chunks from YAML definitions</h1>
     <small class="dont-index">Source: <a href='https://github.com/daroczig/dbr/blob/master/R/chunks.R'><code>R/chunks.R</code></a></small>
-    <div class="hidden name"><code>sql_chunk.Rd</code></div>
+    <div class="hidden name"><code>sql_chunks.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>For more details and examples, please see the package <code>README.md</code>.</p>
+    <p>Look up all SQL chunks from YAML definitions</p>
     </div>
 
-    <pre class="usage"><span class='fu'>sql_chunk</span>(<span class='no'>key</span>, <span class='no'>...</span>, <span class='kw'>indent_after_linebreak</span> <span class='kw'>=</span> <span class='fl'>0</span>)</pre>
+    <pre class="usage"><span class='fu'>sql_chunks</span>()</pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>key</th>
-      <td><p>optional key defined in <code><a href='sql_chunk_files.html'>sql_chunk_files</a></code> to filter for</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>passed to <code>glue</code> for string interpolation</p></td>
-    </tr>
-    <tr>
-      <th>indent_after_linebreak</th>
-      <td><p>integer for extra indent</p></td>
-    </tr>
-    </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>string</p>
+    <p>list</p>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='sql_chunk_files.html'>sql_chunk_files</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>'example_sql_chunks.yaml'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'dbr'</span>))
-<span class='fu'>sql_chunk</span>(<span class='st'>'dbr.shinydemo.countries.count'</span>)
-
-<span class='co'>## pass it right away to a database</span>
-<span class='no'>countries</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='db_query.html'>db_query</a></span>(<span class='fu'>sql_chunk</span>(<span class='st'>'dbr.shinydemo.countries.count'</span>), <span class='st'>'shinydemo'</span>)
-
-<span class='co'>## example for a more complex query</span>
-<span class='no'>cities</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='db_query.html'>db_query</a></span>(<span class='fu'>sql_chunk</span>(<span class='st'>'dbr.shinydemo.cities.europe'</span>), <span class='st'>'shinydemo'</span>)
-}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
